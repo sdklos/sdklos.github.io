@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Building Family Associations with Rails: part one, models"
-date:   2017-09-24 22:05:28 +0000
+date:   2017-09-24 18:05:28 -0400
 ---
 
 
@@ -13,14 +13,15 @@ First I generated a resource "Person". The table looks like this:
 
 ```
 create_table "people", force: :cascade do |t|
-    t.string "name"
+    t.string "given_name"
+		t.string "name"
     t.integer "year_of_birth"
     t.integer "year_of_death"
     t.text "comments"
+		t.integer "creator_id"
+		
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "creator_id"
-    t.string "given_name"
+    t.datetime "updated_at", null: false 
   end
 ```
 
@@ -31,6 +32,7 @@ Then I generated two join models: ChildParent and Marriage. The tables looked li
     t.integer "person_id"
     t.integer "parent_id"
     t.integer "child_id"
+		
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -38,6 +40,7 @@ Then I generated two join models: ChildParent and Marriage. The tables looked li
 	  create_table "marriages", force: :cascade do |t|
     t.integer "person_id"
     t.integer "spouse_id"
+		
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -77,4 +80,6 @@ class Marriage < ApplicationRecord
 end
 
 ```
+
+To be honest, I implemented the "inverse_of" and "optional" modifications haphazardly and I'm not sure they're required or if they're even causing problems. These are other issues that will have to be addressed at some point.
 

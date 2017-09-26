@@ -16,7 +16,7 @@ My new path:
 
 ```
 
-It is pretty basic. I built the unpersisted relation objects inside of the form rather than in the controller:
+It is pretty basic. As is the form.
 
 ```
 <%= form_for @person do |f| %>
@@ -29,7 +29,9 @@ It is pretty basic. I built the unpersisted relation objects inside of the form 
   <%= f.hidden_field :creator_id, :value => current_user.id %>
 ```
 
-Then I added this form as a partial for the other associations, setting the value of each field to nil for a clean edit view:
+Then I added this form as a partial for the other associations, setting the value of each field to nil for a clean edit view.
+
+ I built the unpersisted relation objects inside of the form rather than in the controller:
 
 ```
 <%= f.fields_for :parents, @person.parents.build do |parent_fields| %>

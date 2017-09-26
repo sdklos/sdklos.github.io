@@ -7,7 +7,7 @@ date:   2017-09-24 18:05:28 -0400
 
 I had quite a time building a family tree app. It's still not quite perfect, but it works pretty well. I couldn't find much online that addressed this, so hopefully this blog post will help other people.
 
-The first thing I decided to do was build a main "persons" table and make use of self joins, along with two join tables: "child_parents" and "marriages". The join tables, in combination with the fact that all of these associations involved the "persons" table, made it impossible to set up inverse relationships. I ended up having to build these inverses myself (I'll talk about that in part 2.) Maybe there is a better way to set up these associations that can allow for inverses, but here is how I got it to work:
+The first thing I decided to do was build a main "persons" table and make use of self joins, along with two join tables: "child_parents" and "marriages". The join tables, in combination with the fact that all of these associations involved the "persons" table, made it impossible to set up inverse relationships. I ended up having to build these inverses myself (I'll talk about that in part 3.) Maybe there is a better way to set up these associations that can allow for inverses, but here is how I got it to work:
 
 First I generated a resource "Person". The table looks like this:
 

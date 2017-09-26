@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Building Family Associations with Rails: part two, form and controllers"
-date:   2017-09-26 01:12:33 +0000
+date:   2017-09-25 21:12:34 -0400
 ---
 
 
@@ -22,41 +22,41 @@ It is pretty basic. I built the unpersisted relation objects inside of the form 
 <%= form_for @person do |f| %>
 
   <%= f.text_field :given_name, :placeholder => "Given Name" %>
-    <%= f.text_field :name, :placeholder => "Family Name" %>
-    <%= f.text_field :year_of_birth, :placeholder => "Year of Birth (four digits)" %>
-    <%= f.text_field :year_of_death, :placeholder => "Year of Death (four digits)" %>
-    <%= f.text_area :comments, :placeholder => "Comments" %>
-    <%= f.hidden_field :creator_id, :value => current_user.id %>
+  <%= f.text_field :name, :placeholder => "Family Name" %>
+  <%= f.text_field :year_of_birth, :placeholder => "Year of Birth (four digits)" %>
+  <%= f.text_field :year_of_death, :placeholder => "Year of Death (four digits)" %>
+  <%= f.text_area :comments, :placeholder => "Comments" %>
+  <%= f.hidden_field :creator_id, :value => current_user.id %>
 ```
 
 Then I added this form as a partial for the other associations, setting the value of each field to nil for a clean edit view:
 
 ```
 <%= f.fields_for :parents, @person.parents.build do |parent_fields| %>
-          <%= render 'fields', :f => parent_fields %>
-        <% end %>
+  <%= render 'fields', :f => parent_fields %>
+<% end %>
 ```
 
 Etc. I also added a collection select for each association, for relating database items that have already been persisted:
 
 ```
 <%= f.label :parent_ids, "Select Parents" %>
-      <%= f.collection_check_boxes(:parent_ids, Person.alphabetize, :id, :display) do |b| %>
-        <div><%= b.check_box + b.text %></div>
-      <% end %>
+  <%= f.collection_check_boxes(:parent_ids, Person.alphabetize, :id, :display) do |b| %>
+    <div><%= b.check_box + b.text %></div>
+<% end %>
 ```
 
 Here is my method for the nested attributes:
 
 ```
 def parents_attributes=(parents_attributes)
-    parents_attributes.each do |i, parent_attributes|
-      parent = Person.find_or_initialize_by(parent_attributes)
-      if parent.save
-        self.parents << parent
-      end
+  parents_attributes.each do |i, parent_attributes|
+    parent = Person.find_or_initialize_by(parent_attributes)
+    if parent.save
+      self.parents << parent
     end
   end
+end
 ```
 
 I used the following validations on my Person class:

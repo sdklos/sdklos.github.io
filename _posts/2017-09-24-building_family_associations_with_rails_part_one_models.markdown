@@ -13,37 +13,28 @@ First I generated a resource "Person". The table looks like this:
 
 ```
 create_table "people", force: :cascade do |t|
-    t.string "given_name"
-		t.string "name"
-    t.integer "year_of_birth"
-    t.integer "year_of_death"
-    t.text "comments"
-		t.integer "creator_id"
-		
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false 
-  end
+  t.string "given_name"
+  t.string "name"
+  t.integer "year_of_birth"
+  t.integer "year_of_death"
+  t.text "comments"
+  t.integer "creator_id"
+end
 ```
 
 Then I generated two join models: ChildParent and Marriage. The tables looked like this:
 
 ```
-  create_table "child_parents", force: :cascade do |t|
-    t.integer "person_id"
-    t.integer "parent_id"
-    t.integer "child_id"
-		
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+create_table "child_parents", force: :cascade do |t|
+  t.integer "person_id"
+  t.integer "parent_id"
+  t.integer "child_id"
+end
 	
-	  create_table "marriages", force: :cascade do |t|
-    t.integer "person_id"
-    t.integer "spouse_id"
-		
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+create_table "marriages", force: :cascade do |t|
+  t.integer "person_id"
+  t.integer "spouse_id"
+end
 ``` 
 
 

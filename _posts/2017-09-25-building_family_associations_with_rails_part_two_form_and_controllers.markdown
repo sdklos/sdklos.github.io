@@ -48,16 +48,32 @@ Etc. I also added a collection select for each association, for relating databas
 <% end %>
 ```
 
-Here is my method for the nested attributes:
+Here is how my nested attributes are accepted:
 
 ```
-def parents_attributes=(parents_attributes)
-  parents_attributes.each do |i, parent_attributes|
-    parent = Person.find_or_initialize_by(parent_attributes)
-    if parent.save
-      self.parents << parent
-    end
+class Person < ApplicationRecord
+  include Relationships
+  include PersonDisplay::InstanceMethods
+  extend PersonDisplay::ClassMethods
+  extend Validation
+	
+	accepts_nested_attributes_for :parents, :spouses, :children, :reject_if => :reject_person_attributes?
+	
+  def reject_person_attributes?(attributes)
+    !Person.attributes_are_valid?(attributes)
   end
+	
+end
+```
+
+```
+module Validation
+
+  def attributes_are_valid?(attributes)
+    object = self.new(attributes)
+    object.valid?
+  end
+	
 end
 ```
 
@@ -91,18 +107,22 @@ end
 And finally, my create method:
 
 ```
-def create
-  @person = Person.new(person_params)
-  @person.persist_relationships
-    respond_to do |format|
-      if @person.save
-        format.html { redirect_to @person, notice: 'Person was successfully created.'}
-        format.json {render action: 'show', status: :created, location: @person}
-      else
-        format.html {render action: 'new'}
-        format.json {render json: @person.errors, status: :unprocessable_entity}
+class PeopleController < ApplicationController
+
+  def create
+    @person = Person.new(person_params)
+    @person.persist_relationships
+      respond_to do |format|
+        if @person.save
+          format.html { redirect_to @person, notice: 'Person was successfully created.'}
+          format.json {render action: 'show', status: :created, location: @person}
+        else
+          format.html {render action: 'new'}
+          format.json {render json: @person.errors, status: :unprocessable_entity}
+        end
       end
-    end
+  end
+	
 end
 ```
 

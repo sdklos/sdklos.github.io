@@ -45,12 +45,30 @@ my main Person model:
 ```
 class Person < ApplicationRecord
 
+  include Relationships
+  include PersonDisplay::InstanceMethods
+  extend PersonDisplay::ClassMethods
+  extend Validation
+
   has_many :child_parents, class_name: 'ChildParent', foreign_key: :person_id
   has_many :parents, through: :child_parents, class_name: 'Person', foreign_key: :child_id
   has_many :children, through: :child_parents, class_name: 'Person', foreign_key: :parent_id
 
   has_many :marriages, class_name: 'Marriage', foreign_key: :person_id
   has_many :spouses, through: :marriages, class_name: 'Person', foreign_key: :spouse_id
+	
+	validates :name, :given_name, presence: true
+  validates_uniqueness_of :given_name, :scope => [:name]
+  validates :year_of_birth, allow_blank: true, numericality: {
+                                             only_integer: true,
+                                             greater_than_or_equal_to: 1400,
+                                             less_than_or_equal_to: Date.today.year
+                                           }
+  validates :year_of_death, allow_blank: true, numericality: {
+                                             only_integer: true,
+                                             greater_than_or_equal_to: 1400,
+                                             less_than_or_equal_to: Date.today.year
+                                           }
 
 end
 

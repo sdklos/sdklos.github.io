@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Building Family Associations with Rails: part three, association methods"
-date:   2017-09-28 20:58:51 +0000
+date:   2017-09-28 16:58:52 -0400
 ---
 
 As mentioned in the previous post, there's a method I call in my People controller called persist_relationships:
